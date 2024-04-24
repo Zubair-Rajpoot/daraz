@@ -1,0 +1,7 @@
+.header {
+    display: flex;
+    color: white;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+}
