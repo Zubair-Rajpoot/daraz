@@ -5,3 +5,34 @@
     justify-content: space-around;
     width: 100%;
 }
+
+.header__search {
+    width: 100%;
+}
+
+.header__badge {
+    margin-top: 15px;
+}
+
+.header__badge__cart {
+    font-size: 35px;
+    cursor: pointer;
+    color: white;
+}
+
+.cart__item__price {
+    font-style: italic;
+}
+
+.header__link {
+    padding: 10px;
+}
+
+.header__link__title {
+    color: white !important;
+}
+
+.header__search__wrapper {
+    width: 50%;
+    padding-top: 16px;
+}

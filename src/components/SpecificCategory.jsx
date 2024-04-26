@@ -1,6 +1,6 @@
-import { Flex, Card, Typography, Rate, Layout } from 'antd'
+import { Flex, Card, Typography, Rate } from 'antd'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 const { Meta } = Card
 

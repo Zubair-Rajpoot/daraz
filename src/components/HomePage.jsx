@@ -1,36 +1,50 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Typography, Col, Row, Flex, Card, Layout, Rate } from "antd"
-const { Title } = Typography
-const { Meta } = Card
+import { Typography, Flex, Card, Layout, Rate } from "antd"
 import Categories from "./Categories";
 import HeroSection from "./HeroSection";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { addProducts } from "../features/home/homeSlice";
+import { selectHome } from "../app/selectors";
 
+const { Title } = Typography
+const { Meta } = Card
 
 const HomePage = () => {
     const [products, setProducts] = useState([])
+    const home = useSelector(selectHome)
+    const productsData = home.products
+    const dispatch = useDispatch()
+
+    async function fetchProducts() {
+        const result = await axios.get("https://dummyjson.com/products?limit=15")
+        setProducts(result.data.products)
+        dispatch(addProducts(result.data.products))
+    }
+
     useEffect(() => {
-        async function fetchProducts() {
-            const result = await axios.get("https://dummyjson.com/products?limit=15")
-            // console.log(result.data.products)
-            setProducts(result.data.products)
+        if (productsData.length < 1) {
+            fetchProducts()
+        } else {
+            setProducts(productsData)
         }
-        fetchProducts()
     }, [])
+
     return (
         <Layout>
             <Layout.Content>
                 <HeroSection />
                 <Categories />
-                <Title level={2} style={{ textAlign: "center", padding: 20 }}>Products</Title>
+                <Title level={2} className="homepage__title" style={{ textAlign: "center", padding: 20 }}>Products</Title>
                 <Flex wrap="wrap" justify="center" gap={25}>
                     {products.map((prod, i) => {
                         return (
                             <Link to={`/product/${prod.id}`} state={prod} key={i}>
                                 <Card
                                     hoverable
-                                    cover={<img alt={`img-${i}`} src={prod.thumbnail} style={{ backgroundSize: "cover" }} />}
+                                    cover={<img alt={`img-${i}`} src={prod.thumbnail} />}
+                                    className="homepage__card"
                                     style={{ width: 400 }}
                                 >
                                     <Meta description={prod.description} title={prod.title} />
@@ -48,7 +62,7 @@ const HomePage = () => {
                 </Flex>
             </Layout.Content>
             <Layout>
-                <Layout.Footer style={{ backgroundColor: "#f5f5f5", textAlign: "center" }}>
+                <Layout.Footer className="homepage__footer" style={{ backgroundColor: "#f5f5f5", textAlign: "center" }}>
                     DARAZ PAKISTAN ©{new Date().getFullYear()} All Rights Reserved
                 </Layout.Footer>
             </Layout>

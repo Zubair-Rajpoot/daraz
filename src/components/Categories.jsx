@@ -2,15 +2,27 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Typography, Flex, Card, Skeleton } from "antd"
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { addCategories } from "../features/home/homeSlice";
+import { selectHome } from "../app/selectors"
 const { Title } = Typography
 
 const Categories = () => {
     const [categories, setCategories] = useState([])
+    const home = useSelector(selectHome)
+    const categoriesData = home.categories
+    const dispatch = useDispatch()
+
     useEffect(() => {
-        axios.get("https://dummyjson.com/products/categories")
-            .then((res) => {
-                setCategories(res.data)
-            })
+        if (categoriesData.length < 1) {
+            axios.get("https://dummyjson.com/products/categories")
+                .then((res) => {
+                    setCategories(res.data)
+                    dispatch(addCategories(res.data))
+                })
+        } else {
+            setCategories(categoriesData)
+        }
     }, [])
     return (
         <div>

@@ -1,19 +1,30 @@
 import { ShoppingCartOutlined } from '@ant-design/icons'
-import { Carousel, Row, Col, Typography, Button } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { Carousel, Row, Col, Typography, Button, message } from 'antd'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItem } from '../features/cart/cartSlice'
 import axios from 'axios'
+import { selectUser } from '../app/selectors'
 
 const Product = () => {
 
     const [data, setData] = useState([])
     const { id } = useParams()
     const dispatch = useDispatch()
-    const items = useSelector(state => state.cart)
+    const users = useSelector(selectUser)
+    const user = users.user
+
+    const [messageApi, contextHolder] = message.useMessage()
 
     function handleClick() {
+        if (!user) {
+            messageApi.open({
+                type: "info",
+                content: "Login is Required!!!"
+            })
+            return
+        }
         dispatch(addItem(data))
     }
 
@@ -27,6 +38,7 @@ const Product = () => {
 
     return (
         <div style={{ width: "90%", padding: 40, height: "100vh" }}>
+            {contextHolder}
             <Row justify={"space-around"} align={"middle"}>
                 <Col span={12} style={{ padding: 20 }}>
                     <Typography.Title>{data.title}</Typography.Title>
@@ -36,7 +48,9 @@ const Product = () => {
                     <Typography.Title level={5}>Stock: {data.stock}</Typography.Title>
                     <Typography.Title level={5}>Discount: {data.discountPercentage + "%"}</Typography.Title>
                     <Typography.Title level={3}>Price: {data.price}</Typography.Title>
-                    <Button type='primary' block onClick={handleClick}>Add to Cart<ShoppingCartOutlined style={{ fontSize: 20 }} /></Button>
+                    <Button type='primary' block onClick={handleClick}>
+                        Add to Cart<ShoppingCartOutlined style={{ fontSize: 20 }} />
+                    </Button>
                 </Col>
                 <Col span={12}>
                     <Carousel autoplay autoplaySpeed={2000}>

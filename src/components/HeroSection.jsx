@@ -1,11 +1,11 @@
-import React from 'react'
 import { Carousel, Typography } from 'antd'
+import "./stylesheets/HeroSection.css"
 const HeroSection = () => {
 
     return (
-        <div style={{ margin: "auto", textAlign: "center" }}>
-            <Typography.Title style={{ padding: 20 }}>Daraz Offers</Typography.Title>
-            <Carousel autoplay autoplaySpeed={2000} style={{ width: "100%", marginBottom: 20 }}>
+        <div className='hero-section'>
+            <Typography.Title className='hero-section__title'>Daraz Offers</Typography.Title>
+            <Carousel autoplay autoplaySpeed={2000} className='hero-section__carousel'>
                 <div>
                     <img src="https://picsum.photos/id/1/1300/600" alt="img1" />
                 </div>
